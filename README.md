@@ -14,7 +14,10 @@ npm install jest
 
 ### Link to Repo: 
 
-https://github.com/DSnod93/TeamProfileGen
+https://github.com/DSnod93/TeamProfileGen <br>
+[Test Run](https://drive.google.com/file/d/1PtZlzrNVVGISWt95LSKiR8P3B39c29xS/view) <br>
+[Walkthrough](https://drive.google.com/file/d/1z7kkIyz-LBfD_fpxI4_Ut46EVJFciM1a/view)
+
 
 ## Usage 
 
@@ -26,3 +29,4 @@ https://github.com/DSnod93/TeamProfileGen
 ### Via Terminal 
 1. cd into the folder containing Index.js
 2. Enter node Index.js
+
