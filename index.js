@@ -1,92 +1,94 @@
-
+// DEPENDENCIES
 const inquirer = require("inquirer");
-const Employee = require("./lib/Employee");
-const Engineer = require("./lib/Engineer");
-const Manager = require("./lib/Manager");
-const Intern = require("./lib/Intern");
-const fs = require("fs");
+const fs = require('fs')
 
-let teamArr = [];
+// EMPLOYEES
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
 
-function startPrompt() {
-    inquirer.prompt([
+// TEAM ARRAY
+const employeeTeam = []
+
+// PROMPT FOR MANAGER
+const managerPrompt = () => {
+    return inquirer.prompt([
         {
+            type: "input",
             name: "name",
-            message: "Enter manager's name"
-
+            message: "Enter the manager's name."
         },
         {
+            type: "input",
             name: "id",
-            message: "Enter manager's ID"
+            message: "Enter the manager's ID."
         },
         {
+            type: "input",
             name: "email",
-            message: "Enter manager's email address"
+            message: "Enter the manager's email address."
         },
-
         {
-            name: "officeNumber",
-            type: "number",
-            message: "Enter manager's office number"
-        },
+            type: "input",
+            name: "office",
+            message: "Enter the manager's office number."
+        }
     ])
-
         .then(function (data) {
             const name = data.name
             const id = data.id
             const email = data.email
-            const officeNumber = data.officeNumber
-            const teamMember = new Manager(name, id, email, officeNumber)
-            teamArr.push(teamMember)
-            createTeamMembers();
-        });
+            const office = data.office
+            const manager = new Manager(name, id, email, office)
+            employeeTeam.push(manager)
+            mainMenu()
+        })
+};
 
-}
-
-function createTeamMembers() {
-    inquirer.prompt([
+// AFTER MANAGER COMPLETES PROMPT THEY CAN CREATE TEAM
+const mainMenu = () => {
+    return inquirer.prompt([
         {
             type: "list",
-            name: "teamData",
-            message: "Add more team members?",
-            choices: ['Engineer', 'Intern', 'DONE']
+            name: "options",
+            message: "What would you like to add next?",
+            choices: ["Engineer", "Intern", "Finish building my team"]
         }
     ])
+        .then(({ options }) => {
+            if (options === "Engineer") {
+                createNewEngineer()
 
-        .then(function (data) {
+            } else if (options === "Intern") {
+                createNewIntern()
 
-            switch (data.teamData) {
-                case "Engineer":
-                    createEngineer();
-                    break;
+            } else if (options === "Finish building my team")
+                generateHtml()
+        })
+};
 
-                case "Intern":
-                    createIntern();
-                    break;
-                case "DONE":
-                    generateHTML();
-                    break;
-            }
-        });
-}
-
-function createEngineer() {
-    inquirer.prompt([
+// CREATE ENGINEER FOR TEAM
+const createNewEngineer = () => {
+    return inquirer.prompt([
         {
+            type: "input",
             name: "name",
-            message: "Enter engineer's name" 
+            message: "Enter the engineer's name."
         },
         {
+            type: "input",
             name: "id",
-            message: "Enter engineer's ID"
+            message: "Enter the engineer's ID."
         },
         {
+            type: "input",
             name: "email",
-            message: "Enter engineer's email address"
+            message: "Enter the engineer's email address."
         },
         {
+            type: "input",
             name: "github",
-            message: "Enter engineer's Github profile"
+            message: "Enter the engineer's GitHub?"
         }
     ])
 
@@ -95,32 +97,34 @@ function createEngineer() {
             const id = data.id
             const email = data.email
             const github = data.github
-            const teamMember = new Engineer(name, id, email, github)
-            teamArr.push(teamMember)
-            createTeamMembers()
-        });
+            const engineer = new Engineer(name, id, email, github)
+            employeeTeam.push(engineer)
+            mainMenu()
+        })
+};
 
-}
-
-function createIntern() {
-    inquirer.prompt([
+// CREATE INTERN FOR TEAM
+const createNewIntern = () => {
+    return inquirer.prompt([
         {
+            type: "input",
             name: "name",
-            message: "Enter intern's name"
-
+            message: "Enter the intern's name."
         },
         {
+            type: "input",
             name: "id",
-            message: "Enter intern's ID"
+            message: "Enter the intern's ID."
         },
         {
+            type: "input",
             name: "email",
-            message: "Enter intern's email address"
-
+            message: "Enter the intern's email address."
         },
         {
+            type: "input",
             name: "school",
-            message: "Enter intern's school"
+            message: "Enter the intern's school."
         }
     ])
 
@@ -129,96 +133,62 @@ function createIntern() {
             const id = data.id
             const email = data.email
             const school = data.school
-            const teamMember = new Intern(name, id, email, school)
-            teamArr.push(teamMember)
-            createTeamMembers()
-        });
-
+            const intern = new Intern(name, id, email, school)
+            employeeTeam.push(intern)
+            mainMenu()
+        })
 };
 
-function generateHTML() {
-    console.log('You have entered the following:');
-    console.log(teamArr);
-    console.log('DONE!');
-    console.log('Please check the dist folder for the HTML file.');
-    let mainHTML = []
-    let htmlForm = 
-`
-<!DOCTYPE html>
+// GENERATE HTML
+function generateHtml() {
+    const html =
+        `
+    <!DOCTYPE html>
     <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-            <title>My Team</title>
-        </head>
-        <body>
-            <nav class="black">
-                <div class="nav-wrapper">
-                    <a href="#" class="brand-logo center">My Team</a>
-                </div>
-            </nav>
-            <div class="container">
-`
-    mainHTML.push(htmlForm);
-
-    for (let i = 0; i < teamArr.length; i++) {
-        let object = 
-`
-                <div class="row">
-                    <div class="col s6 m6 l6 m6">
-                        <div class="card grey darken-1 z-depth-3">
-                            <div class="card-content white-text">
-                                <span>${teamArr[i].name}</span>
-                                <p>${teamArr[i].title}</p>
-                            </div>
-                            <div class="card-action">
-                                <p class="white-text">ID: ${teamArr[i].id}</p>
-                                <p class="white-text">Email: <a href="mailto:${teamArr[i].email}">${teamArr[i].email}</a></p>
-`
-        if (teamArr[i].officeNumber) {
-            object += 
-`
-                                <p class="white-text">Office Number: ${teamArr[i].officeNumber}</p>
-`
-        }
-        if (teamArr[i].github) {
-            object += 
-`
-                                <p class="white-text">GitHub: <a href="https://github.com/${teamArr[i].github}">${teamArr[i].github}</a></p>
-`
-        }
-        if (teamArr[i].school) {
-            object += 
-`
-                                <p class="white-text">School: ${teamArr[i].school}</p>
-`
-        }
-        object += 
-`
-                            </div>
-                        </div>
-                    </div>
-                
-            
-`
-        mainHTML.push(object)
-    }
-
-    let closeHTML = 
-`               </div>
-            </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Team Profile</title>
+    </head>
+    <body>
+    <header  class="bg-danger d-flex justify-content-center">
+        <h1>Team Profile Generator</h1>
+    </header>
+    <main class="bg-danger">
+        <div class="row ">
+            <section class="card col bg-secondary">    
+                <div class="card-text">${employeeTeam[0].name}</div>
+                <div class="card-text">${employeeTeam[0].id}</div>
+                <div class="card-text"><a href="mailto:${employeeTeam[0].email}">${employeeTeam[0].email}</a></div>
+                <div class="card-text">${employeeTeam[0].office}</div>
+            </section> 
+            <section class="card col bg-secondary">    
+                <div class="card-text">${employeeTeam[1].name}</div>
+                <div class="card-text">${employeeTeam[1].id}</div>
+                <div class="card-text"><a href="mailto:${employeeTeam[1].email}">${employeeTeam[1].email}</a></div>
+                <div class="card-text"><a href="https://github.com/${employeeTeam[1].github}">GitHub</a></div>
+            </section>  
+            <section class="card col bg-secondary">    
+                <div class="card-text">${employeeTeam[2].name}</div>
+                <div class="card-text">${employeeTeam[2].id}</div>
+                <div class="card-text"><a href="mailto:${employeeTeam[2].email}">${employeeTeam[2].email}</a></div>
+                <div class="card-text">${employeeTeam[2].school}</div>
+            </section> 
+        </div>
+    </main>
+    <footer>
+    </footer>
     </body>
     </html>
-`
-    mainHTML.push(closeHTML);
+    `
+    console.log(html)
 
-    fs.writeFile(`./dist/teamGen.html`, mainHTML.join(""), function (error) {
-        
-    })
-}
+    // WRITE HTML INTO INDEX.HTML
+    fs.writeFile("index.html", html, function (err) {
+    });
+};
 
-startPrompt();
+// START APP
+managerPrompt();

@@ -1,4 +1,4 @@
-# TeamProfileGen
+# Team Profile Generator
 
 ## Description
 The Team Profile Generator dynamically generates a markdown file after a completion of prompts within the CLI. A HTML page displays what the user input.
@@ -12,14 +12,16 @@ npm install inquirer
 npm install jest
 
 
-### Link to Repo: 
-
-https://github.com/DSnod93/TeamProfileGen <br>
-[Test Run](https://drive.google.com/file/d/1PtZlzrNVVGISWt95LSKiR8P3B39c29xS/view) <br>
-[Walkthrough](https://drive.google.com/file/d/1z7kkIyz-LBfD_fpxI4_Ut46EVJFciM1a/view)
+### Links: 
+[Test Run](https://drive.google.com/file/d/1yGKtV3aSIgCH_N657g0XH8IP9oWS1g0v/view) <br>
+[Walkthrough](https://drive.google.com/file/d/1FMgZdZE-dgJhDh1Ensw0DFyy_pwWkJdR/view)
 
 
-## Usage 
+## Technologies Used
+* HTML
+* Javascript
+* Jest
+* Inquirer
 
 ### VS Code
 
